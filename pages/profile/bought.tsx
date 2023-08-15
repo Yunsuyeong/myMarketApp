@@ -1,9 +1,9 @@
-import type { NextPage } from "next";
+import { NextPage } from "next";
 
-const Home: NextPage = () => {
+const ProfileBought: NextPage = () => {
   return (
-    <div className="flex flex-col space-y-2 py-4 px-3">
-      {[...Array(10)].map((_, i) => (
+    <div className="flex flex-col space-y-4 py-4">
+      {[...Array(5)].map((_, i) => (
         <div key={i} className="flex justify-between px-2 pb-4 cursor-pointer">
           <div className="flex space-x-2 items-center">
             <div className="w-16 h-16 bg-white rounded-sm" />
@@ -51,25 +51,8 @@ const Home: NextPage = () => {
           </div>
         </div>
       ))}
-      <button className="fixed bottom-10 right-4 p-4 shadow-md rounded-full bg-green-300 hover:bg-green-500 transition-colors cursor-pointer">
-        <svg
-          className="h-6 w-6"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-          />
-        </svg>
-      </button>
     </div>
   );
 };
 
-export default Home;
+export default ProfileBought;
