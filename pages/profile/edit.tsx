@@ -1,4 +1,6 @@
 import { NextPage } from "next";
+import Button from "@/components/button";
+import Input from "@/components/input";
 
 const ProfileEdit: NextPage = () => {
   return (
@@ -14,37 +16,17 @@ const ProfileEdit: NextPage = () => {
         </label>
       </div>
       <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium">
-          Email Address
-        </label>
-        <input
-          id="email"
+        <Input label="Email Address" name="email" type="text" required />
+        <Input
+          label="Phone Number"
+          name="phone"
+          text="number"
+          kind="phone"
           required
-          type="text"
-          className="appearance-none w-full text-md text-black font-medium px-2 py-2 border border-white rounded-sm shadow-sm placeholder-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Enter Email Address"
         />
       </div>
-      <div className="space-y-2">
-        <label htmlFor="phone" className="text-sm font-medium">
-          Phone Number
-        </label>
-        <div className="flex rounded-sm shadow-sm">
-          <span className="flex justify-center items-center rounded-l-md px-2 border-r-0 border border-white bg-white text-black select-none">
-            +82
-          </span>
-          <input
-            id="phone"
-            required
-            type="number"
-            className="appearance-none w-full text-md text-black font-medium px-2 py-2 border border-white rounded-sm shadow-sm placeholder-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter Phone Number"
-          />
-        </div>
-      </div>
-      <button className="w-full py-2 px-2 mt-2 bg-blue-300 hover:bg-blue-500 rounded-sm shadow-sm border border-transparent text-md focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:outline-none">
-        Edit Profile
-      </button>
+
+      <Button text="Edit Profile" />
     </div>
   );
 };

@@ -1,8 +1,13 @@
+import Button from "@/components/button";
+import Input from "@/components/input";
+import PageTitle from "@/components/pageTitle";
+import Textarea from "@/components/textarea";
 import { NextPage } from "next";
 
 const Upload: NextPage = () => {
   return (
     <div className="px-3 py-4">
+      <PageTitle title="Item Upload" />
       <div>
         <label className="w-full h-48 flex justify-center items-center border-2 border-dashed border-white rounded-sm hover:border-blue-500">
           <svg
@@ -23,39 +28,18 @@ const Upload: NextPage = () => {
         </label>
       </div>
       <div className="my-3">
-        <label className="mb-1 block text-sm font-medium" htmlFor="price">
-          Price
-        </label>
-        <div className="flex items-center shadow-sm rounded-sm relative">
-          <div className="absolute left-0 flex justify-center items-center pl-2 pointer-events-none">
-            <span className="text-sm text-black">$</span>
-          </div>
-          <input
-            id="price"
-            type="text"
-            placeholder="0.00"
-            className="w-full px-3 pl-6 py-2 border text-gray-300 border-white rounded-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          />
-          <div className="absolute right-0 flex items-center pr-2 pointer-events-none">
-            <span>USD</span>
-          </div>
-        </div>
+        <Input required name="name" label="Name" type="text" />
+        <Input
+          required
+          label="Price"
+          name="price"
+          placeholder="0.00"
+          kind="price"
+          type="text"
+        />
       </div>
-      <div>
-        <label htmlFor="description" className="mb-1 block text-sm font-medium">
-          Description
-        </label>
-        <div>
-          <textarea
-            id="description"
-            className="w-full mt-1 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            rows={6}
-          />
-        </div>
-      </div>
-      <button className="w-full mt-3 py-2 bg-blue-300 hover:bg-blue-500 rounded-sm shadow-sm border border-transparent text-md focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:outline-none">
-        Upload Item
-      </button>
+      <Textarea label="Description" name="description" />
+      <Button text="Upload Item" />
     </div>
   );
 };
