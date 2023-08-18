@@ -1,10 +1,12 @@
 import { NextPage } from "next";
 import Button from "@/components/button";
 import Input from "@/components/input";
+import PageTitle from "@/components/pageTitle";
 
 const ProfileEdit: NextPage = () => {
   return (
     <div className="px-3 py-4 space-y-4">
+      <PageTitle title="Profile Edit" />
       <div className="flex items-center space-x-2">
         <div className="w-12 h-12 rounded-full bg-white" />
         <label
