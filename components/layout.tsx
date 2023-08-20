@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { cls } from "../utils/utils";
+import { cls } from "../utils/client/utils";
 
 interface ILayoutProps {
   title?: string;

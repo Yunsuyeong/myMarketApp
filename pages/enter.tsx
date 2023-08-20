@@ -1,10 +1,23 @@
 import Button from "@/components/button";
 import Input from "@/components/input";
+import useMutation from "@/utils/client/useMutation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+interface IEnterForm {
+  email?: string;
+  phone?: string;
+}
 
 const Enter = () => {
   const [auth, setAuth] = useState<"email" | "phone">("email");
   const onChange = (e: any) => setAuth(e.target.value);
+  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
+  const { register, handleSubmit, reset } = useForm<IEnterForm>();
+  const onValid = (form: IEnterForm) => {
+    if (loading) return;
+    enter(form);
+  };
   return (
     <div className="px-4 mt-16">
       <h1 className="text-3xl font-bold text-center">Welcome!</h1>
@@ -21,21 +34,32 @@ const Enter = () => {
             </select>
           </div>
         </div>
-        <form className="flex flex-col mt-8">
+        <form onSubmit={handleSubmit(onValid)} className="flex flex-col mt-8">
           {auth === "email" ? (
-            <Input label="Email Address" name="email" type="text" required />
+            <Input
+              label="Email Address"
+              register={register("email", { required: true })}
+              name="email"
+              type="text"
+              required
+            />
           ) : null}
           {auth === "phone" ? (
             <Input
               label="Phone Number"
               name="phone"
-              text="number"
+              type="number"
               kind="phone"
+              register={register("phone", { required: true })}
               required
             />
           ) : null}
-          {auth === "email" ? <Button text={"Get Login Link"} /> : null}
-          {auth === "phone" ? <Button text={"Get One-time Password"} /> : null}
+          {auth === "email" ? (
+            <Button text={loading ? "Loading..." : "Get Login Link"} />
+          ) : null}
+          {auth === "phone" ? (
+            <Button text={loading ? "Loading..." : "Get One-time Password"} />
+          ) : null}
         </form>
         <div className="mt-5">
           <div className="relative">

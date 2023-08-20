@@ -1,4 +1,4 @@
-import { cls } from "@/utils/utils";
+import { cls } from "@/utils/client/utils";
 
 interface IButton {
   large?: boolean;

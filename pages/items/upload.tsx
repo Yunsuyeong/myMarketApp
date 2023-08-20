@@ -3,8 +3,16 @@ import Input from "@/components/input";
 import PageTitle from "@/components/pageTitle";
 import Textarea from "@/components/textarea";
 import { NextPage } from "next";
+import { useForm } from "react-hook-form";
+
+interface IUploadForm {
+  name?: string;
+  price?: string;
+  description?: string;
+}
 
 const Upload: NextPage = () => {
+  const { register, handleSubmit } = useForm<IUploadForm>();
   return (
     <div className="px-3 py-4">
       <PageTitle title="Item Upload" />
@@ -28,17 +36,28 @@ const Upload: NextPage = () => {
         </label>
       </div>
       <div className="my-3">
-        <Input required name="name" label="Name" type="text" />
         <Input
+          register={register("name", { required: true })}
+          required
+          name="name"
+          label="Name"
+          type="text"
+        />
+        <Input
+          register={register("price", { required: true })}
           required
           label="Price"
           name="price"
-          placeholder="0.00"
           kind="price"
           type="text"
         />
       </div>
-      <Textarea label="Description" name="description" />
+      <Textarea
+        register={register("description", { required: true })}
+        required
+        label="Description"
+        name="description"
+      />
       <Button text="Upload Item" />
     </div>
   );

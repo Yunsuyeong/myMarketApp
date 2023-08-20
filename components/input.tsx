@@ -1,11 +1,24 @@
+import { UseFormRegisterReturn } from "react-hook-form";
+
 interface IInput {
   label: string;
   name: string;
-  [key: string]: any;
   kind?: "text" | "phone" | "price";
+  type: string;
+  register: UseFormRegisterReturn;
+  required: boolean;
+  placeholder?: string;
 }
 
-const Input = ({ label, name, kind = "text", ...rest }: IInput) => {
+const Input = ({
+  label,
+  name,
+  kind = "text",
+  type,
+  register,
+  required,
+  placeholder,
+}: IInput) => {
   return (
     <div>
       <label htmlFor={name} className="mb-1 block text-sm font-medium">
@@ -15,7 +28,10 @@ const Input = ({ label, name, kind = "text", ...rest }: IInput) => {
         <div className="relative flex items-center rounded-sm shadow-sm">
           <input
             id={name}
-            {...rest}
+            required={required}
+            type={type}
+            {...register}
+            placeholder={placeholder}
             className="w-full px-3 pl-6 py-2 border text-black border-white rounded-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -27,7 +43,10 @@ const Input = ({ label, name, kind = "text", ...rest }: IInput) => {
           </div>
           <input
             id={name}
-            {...rest}
+            required={required}
+            type={type}
+            {...register}
+            placeholder={placeholder}
             className="appearance-none w-full text-md text-black font-medium px-3 py-2 pl-6 border border-white rounded-sm shadow-sm placeholder-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
           <div className="absolute right-0 flex items-center pr-2 pointer-events-none">
@@ -42,7 +61,10 @@ const Input = ({ label, name, kind = "text", ...rest }: IInput) => {
           </span>
           <input
             id={name}
-            {...rest}
+            required={required}
+            type={type}
+            {...register}
+            placeholder={placeholder}
             className="appearance-none w-full text-md text-black font-medium px-2 py-2 border border-white rounded-sm shadow-sm placeholder-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>

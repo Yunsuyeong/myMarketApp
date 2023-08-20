@@ -3,8 +3,14 @@ import Layout from "@/components/layout";
 import PageTitle from "@/components/pageTitle";
 import Textarea from "@/components/textarea";
 import { NextPage } from "next";
+import { useForm } from "react-hook-form";
+
+interface IQuestionForm {
+  description?: string;
+}
 
 const CommunityDetail: NextPage = () => {
+  const { register, handleSubmit } = useForm<IQuestionForm>();
   return (
     <Layout canBack>
       <PageTitle title="Community Detail" />
@@ -72,7 +78,12 @@ const CommunityDetail: NextPage = () => {
           </div>
         </div>
         <div className="px-3">
-          <Textarea name="description" placeholder="Answer Question" required />
+          <Textarea
+            register={register("description", { required: true })}
+            name="description"
+            placeholder="Answer Question"
+            required
+          />
           <Button large text="Reply" />
         </div>
       </div>

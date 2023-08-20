@@ -3,8 +3,14 @@ import ChatInput from "@/components/chatInput";
 import Layout from "@/components/layout";
 import PageTitle from "@/components/pageTitle";
 import { NextPage } from "next";
+import { useForm } from "react-hook-form";
+
+interface IChatForm {
+  chat?: string;
+}
 
 const LiveDetail: NextPage = () => {
+  const { register, handleSubmit } = useForm<IChatForm>();
   return (
     <Layout canBack>
       <PageTitle title="Live Detail" />
@@ -29,7 +35,11 @@ const LiveDetail: NextPage = () => {
           </div>
           <form className="fixed bottom-0 inset-x-0 py-2 bg-white">
             <div className="relative w-full max-w-md flex items-center mx-auto">
-              <ChatInput placeholder="Leave a Message" />
+              <ChatInput
+                register={register("chat", { required: true })}
+                required
+                placeholder="Leave a Message"
+              />
               <div className="absolute right-0 inset-y-0 flex py-2 pr-2">
                 <button className="flex items-center px-2 rounded-full text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-blue-300 hover:bg-blue-500">
                   &rarr;

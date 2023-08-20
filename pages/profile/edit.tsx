@@ -2,8 +2,15 @@ import { NextPage } from "next";
 import Button from "@/components/button";
 import Input from "@/components/input";
 import PageTitle from "@/components/pageTitle";
+import { useForm } from "react-hook-form";
+
+interface IEditForm {
+  email?: string;
+  phone?: string;
+}
 
 const ProfileEdit: NextPage = () => {
+  const { register, handleSubmit } = useForm<IEditForm>();
   return (
     <div className="px-3 py-4 space-y-4">
       <PageTitle title="Profile Edit" />
@@ -18,16 +25,22 @@ const ProfileEdit: NextPage = () => {
         </label>
       </div>
       <div className="space-y-2">
-        <Input label="Email Address" name="email" type="text" required />
         <Input
+          register={register("email", { required: true })}
+          label="Email Address"
+          name="email"
+          type="text"
+          required
+        />
+        <Input
+          register={register("phone", { required: true })}
           label="Phone Number"
           name="phone"
-          text="number"
+          type="number"
           kind="phone"
           required
         />
       </div>
-
       <Button text="Edit Profile" />
     </div>
   );

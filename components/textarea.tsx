@@ -1,10 +1,20 @@
+import { UseFormRegisterReturn } from "react-hook-form";
+
 interface ITextarea {
   label?: string;
   name?: string;
-  [key: string]: any;
+  register: UseFormRegisterReturn;
+  required: boolean;
+  placeholder?: string;
 }
 
-const Textarea = ({ label, name, ...rest }: ITextarea) => {
+const Textarea = ({
+  label,
+  name,
+  register,
+  required,
+  placeholder,
+}: ITextarea) => {
   return (
     <div>
       {label ? (
@@ -16,7 +26,9 @@ const Textarea = ({ label, name, ...rest }: ITextarea) => {
         id={name}
         className="w-full mt-1 rounded-sm shadow-sm focus:ring-blue-500 focus:border-blue-500 text-black"
         rows={6}
-        {...rest}
+        placeholder={placeholder}
+        required={required}
+        {...register}
       />
     </div>
   );
