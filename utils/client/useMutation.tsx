@@ -1,15 +1,17 @@
 import { useState } from "react";
 
-interface IUseMutationState {
+interface IUseMutationState<T> {
   loading: boolean;
-  data?: object;
+  data?: T;
   error?: object;
 }
 
-type useMutationResult = [(data: any) => void, IUseMutationState];
+type useMutationResult<T> = [(data: any) => void, IUseMutationState<T>];
 
-const useMutation = (url: string): useMutationResult => {
-  const [result, setResult] = useState({
+export default function useMutation<T = any>(
+  url: string
+): useMutationResult<T> {
+  const [result, setResult] = useState<IUseMutationState<T>>({
     loading: false,
     data: undefined,
     error: undefined,
@@ -24,11 +26,10 @@ const useMutation = (url: string): useMutationResult => {
       },
     })
       .then((res) => res.json().catch(() => {}))
-      .then((data) => setResult((prev) => ({ ...prev, data })))
-      .catch((error) => setResult((prev) => ({ ...prev, error })))
-      .finally(() => setResult((prev) => ({ ...prev, loading: false })));
+      .then((data) => setResult((prev) => ({ ...prev, data, loading: false })))
+      .catch((error) =>
+        setResult((prev) => ({ ...prev, error, loading: false }))
+      );
   };
   return [mutation, { ...result }];
-};
-
-export default useMutation;
+}

@@ -2,11 +2,13 @@ import CircleBtn from "@/components/circleBtn";
 import Item from "@/components/item";
 import Layout from "@/components/layout";
 import PageTitle from "@/components/pageTitle";
+import useUser from "@/utils/client/useUser";
 import type { NextPage } from "next";
 
 const Home: NextPage = () => {
+  const { user, isLoading } = useUser();
   return (
-    <Layout title="Home" isSidebar>
+    <Layout title={isLoading ? "Loading..." : `${user?.name}'s Home`} isSidebar>
       <PageTitle title="Home" />
       <div className="flex flex-col px-3 py-4 divide-y">
         {[...Array(10)].map((_, i) => (

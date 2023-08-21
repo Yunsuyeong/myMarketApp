@@ -10,8 +10,8 @@ const CommunityHome: NextPage = () => {
       <PageTitle title="Question" />
       <div className="py-4 px-3 space-y-4">
         {[...Array(5)].map((_, i) => (
-          <Link href={`community/${i}`}>
-            <div key={i} className="flex flex-col items-center cursor-pointer">
+          <Link key={i} href={`community/${i}`}>
+            <div className="flex flex-col items-center cursor-pointer">
               <span className="flex items-center ml-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-white">
                 Question
               </span>

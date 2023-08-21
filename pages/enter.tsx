@@ -1,66 +1,114 @@
 import Button from "@/components/button";
 import Input from "@/components/input";
 import useMutation from "@/utils/client/useMutation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
 interface IEnterForm {
   email?: string;
   phone?: string;
 }
 
+interface ITokenForm {
+  token: string;
+}
+
+interface IMutationResult {
+  ok: boolean;
+}
+
 const Enter = () => {
   const [auth, setAuth] = useState<"email" | "phone">("email");
   const onChange = (e: any) => setAuth(e.target.value);
-  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
-  const { register, handleSubmit, reset } = useForm<IEnterForm>();
+  const [enter, { loading, data, error }] =
+    useMutation<IMutationResult>("/api/users/enter");
+  const { register, handleSubmit } = useForm<IEnterForm>();
   const onValid = (form: IEnterForm) => {
     if (loading) return;
     enter(form);
   };
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<ITokenForm>();
+  const [token, { loading: tokenLoading, data: tokenData, error: tokenError }] =
+    useMutation<IMutationResult>("/api/users/token");
+  const tokenValid = (form: ITokenForm) => {
+    if (tokenLoading) return;
+    token(form);
+  };
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push("/");
+    }
+  }, [tokenData, router]);
   return (
     <div className="px-4 mt-16">
       <h1 className="text-3xl font-bold text-center">Welcome!</h1>
       <div className="mt-12">
-        <div className="flex flex-col items-center">
-          <div className="w-full flex gap-4 items-center justify-center">
-            <h3 className="text-md font-medium">Enter using</h3>
-            <select
-              onChange={onChange}
-              className="text-sm text-black rounded-lg border-1 hover:border-blue-500"
-            >
-              <option value="email">Email</option>
-              <option value="phone">Phone</option>
-            </select>
-          </div>
-        </div>
-        <form onSubmit={handleSubmit(onValid)} className="flex flex-col mt-8">
-          {auth === "email" ? (
+        {data?.ok ? (
+          <form
+            onSubmit={tokenHandleSubmit(tokenValid)}
+            className="flex flex-col mt-8"
+          >
             <Input
-              label="Email Address"
-              register={register("email", { required: true })}
-              name="email"
+              register={tokenRegister("token", { required: true })}
+              label="Token"
+              name="token"
               type="text"
               required
             />
-          ) : null}
-          {auth === "phone" ? (
-            <Input
-              label="Phone Number"
-              name="phone"
-              type="number"
-              kind="phone"
-              register={register("phone", { required: true })}
-              required
-            />
-          ) : null}
-          {auth === "email" ? (
-            <Button text={loading ? "Loading..." : "Get Login Link"} />
-          ) : null}
-          {auth === "phone" ? (
-            <Button text={loading ? "Loading..." : "Get One-time Password"} />
-          ) : null}
-        </form>
+            <Button text={tokenLoading ? "Loading..." : "Sign in"} />
+          </form>
+        ) : (
+          <>
+            <div className="flex flex-col items-center">
+              <div className="w-full flex gap-4 items-center justify-center">
+                <h3 className="text-md font-medium">Enter using</h3>
+                <select
+                  onChange={onChange}
+                  className="text-sm text-black rounded-lg border-1 hover:border-blue-500"
+                >
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                </select>
+              </div>
+            </div>
+            <form
+              onSubmit={handleSubmit(onValid)}
+              className="flex flex-col mt-8"
+            >
+              {auth === "email" ? (
+                <Input
+                  label="Email Address"
+                  register={register("email", { required: true })}
+                  name="email"
+                  type="text"
+                  required
+                />
+              ) : null}
+              {auth === "phone" ? (
+                <Input
+                  label="Phone Number"
+                  name="phone"
+                  type="number"
+                  kind="phone"
+                  register={register("phone", { required: true })}
+                  required
+                />
+              ) : null}
+              {auth === "email" ? (
+                <Button text={loading ? "Loading..." : "Get Login Link"} />
+              ) : null}
+              {auth === "phone" ? (
+                <Button
+                  text={loading ? "Loading..." : "Get One-time Password"}
+                />
+              ) : null}
+            </form>
+          </>
+        )}
+
         <div className="mt-5">
           <div className="relative">
             <div className="absolute w-full border-t border-white" />
