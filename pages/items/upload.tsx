@@ -2,8 +2,12 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import PageTitle from "@/components/pageTitle";
 import Textarea from "@/components/textarea";
+import useMutation from "@/utils/client/useMutation";
+import { Item } from "@prisma/client";
 import { NextPage } from "next";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 interface IUploadForm {
   name?: string;
@@ -11,8 +15,27 @@ interface IUploadForm {
   description?: string;
 }
 
+interface IMutationResult {
+  ok: boolean;
+  item: Item;
+}
+
 const Upload: NextPage = () => {
+  const router = useRouter();
   const { register, handleSubmit } = useForm<IUploadForm>();
+  const [uploadItem, { loading, data, error }] =
+    useMutation<IMutationResult>("/api/items");
+  const onValid = (form: IUploadForm) => {
+    if (loading) {
+      return;
+    }
+    uploadItem(form);
+  };
+  useEffect(() => {
+    if (data?.ok) {
+      router.replace(`/items/${data.item.id}`);
+    }
+  }, [data, router]);
   return (
     <div className="px-3 py-4">
       <PageTitle title="Item Upload" />
@@ -35,7 +58,7 @@ const Upload: NextPage = () => {
           <input className="hidden" type="file" />
         </label>
       </div>
-      <div className="my-3">
+      <form onSubmit={handleSubmit(onValid)} className="my-3">
         <Input
           register={register("name", { required: true })}
           required
@@ -51,14 +74,14 @@ const Upload: NextPage = () => {
           kind="price"
           type="text"
         />
-      </div>
-      <Textarea
-        register={register("description", { required: true })}
-        required
-        label="Description"
-        name="description"
-      />
-      <Button text="Upload Item" />
+        <Textarea
+          register={register("description", { required: true })}
+          required
+          label="Description"
+          name="description"
+        />
+        <Button text={loading ? "Loading..." : "Upload Item"} />
+      </form>
     </div>
   );
 };

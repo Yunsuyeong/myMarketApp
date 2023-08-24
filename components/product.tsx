@@ -4,12 +4,12 @@ interface IItem {
   id: number;
   name: string;
   color: string;
-  price: number;
+  price: string;
   commentNumber: number;
   heartNumber: number;
 }
 
-const Item = ({
+const Product = ({
   id,
   name,
   color,
@@ -69,4 +69,4 @@ const Item = ({
   );
 };
 
-export default Item;
+export default Product;

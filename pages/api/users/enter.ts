@@ -31,4 +31,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<IResType>) => {
   });
 };
 
-export default withHandler("POST", handler, false);
+export default withHandler(["POST"], handler, false);

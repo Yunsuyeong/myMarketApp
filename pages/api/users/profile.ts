@@ -15,4 +15,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<IResType>) => {
   });
 };
 
-export default withAPISession(withHandler("GET", handler, true));
+export default withAPISession(withHandler(["GET"], handler, true));

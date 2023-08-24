@@ -1,17 +1,19 @@
 import { NextApiHandler } from "next";
 
+type method = "GET" | "POST" | "DELETE";
+
 export interface IResType {
   ok: boolean;
   [key: string]: any;
 }
 
 export const withHandler = (
-  method: "GET" | "POST" | "DELETE",
+  methods: method[],
   handler: NextApiHandler,
   isPrivate?: boolean
 ): NextApiHandler => {
   return async (req, res): Promise<any> => {
-    if (req.method !== method) {
+    if (req.method && !methods.includes(req.method as any)) {
       return res.status(405).end();
     }
     if (isPrivate && !req.session.user) {

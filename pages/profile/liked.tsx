@@ -1,4 +1,4 @@
-import Item from "@/components/item";
+import Product from "@/components/product";
 import PageTitle from "@/components/pageTitle";
 import { NextPage } from "next";
 
@@ -8,7 +8,7 @@ const ProfileLiked: NextPage = () => {
       <PageTitle title="Liked Item" />
       <div className="flex flex-col px-3 py-4 divide-y">
         {[...Array(10)].map((_, i) => (
-          <Item
+          <Product
             id={i}
             key={i}
             name="iPad Pro 10.1"

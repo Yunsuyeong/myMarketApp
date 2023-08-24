@@ -34,4 +34,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<IResType>) => {
   res.json({ ok: true });
 };
 
-export default withAPISession(withHandler("POST", handler, false));
+export default withAPISession(withHandler(["POST"], handler, false));
