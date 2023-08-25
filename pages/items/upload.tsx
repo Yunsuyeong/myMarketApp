@@ -23,7 +23,7 @@ interface IMutationResult {
 const Upload: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<IUploadForm>();
-  const [uploadItem, { loading, data, error }] =
+  const [uploadItem, { loading, data }] =
     useMutation<IMutationResult>("/api/items");
   const onValid = (form: IUploadForm) => {
     if (loading) {

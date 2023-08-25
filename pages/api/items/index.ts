@@ -1,10 +1,10 @@
-import { withHandler } from "@/utils/server/server";
+import { IResType, withHandler } from "@/utils/server/server";
 import { withAPISession } from "@/utils/server/session";
 import { NextApiRequest } from "next";
 import { NextApiResponse } from "next";
 import client from "@/utils/server/client";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse<IResType>) => {
   if (req.method === "POST") {
     const {
       body: { name, price, description },
