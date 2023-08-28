@@ -12,19 +12,23 @@ datasource db {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  phone        String?       @unique
-  email        String?       @unique
-  name         String
-  avatar       String?
-  tokens       Token[]
-  items        Item[]
-  fav          Fav[]
-  posts        Post[]
-  answers      Answer[]
-  interestings Interesting[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id              Int           @id @default(autoincrement())
+  phone           String?       @unique
+  email           String?       @unique
+  name            String
+  avatar          String?
+  tokens          Token[]
+  items           Item[]
+  fav             Fav[]
+  posts           Post[]
+  answers         Answer[]
+  interestings    Interesting[]
+  solds           Sold[]
+  boughts         Bought[]
+  writtenReviews  Review[]      @relation(name: "writtenReviews")
+  receivedReviews Review[]      @relation(name: "receivedReviews")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model Token {
@@ -45,6 +49,8 @@ model Item {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   favs        Fav[]
+  solds       Sold[]
+  boughts     Bought[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -89,6 +95,38 @@ model Interesting {
   userId    Int
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id           Int      @id @default(autoincrement())
+  review       String   @db.MediumText
+  score        Int      @default(1)
+  createdBy    User     @relation(name: "writtenReviews", fields: [createdById], references: [id])
+  createdById  Int
+  createdFor   User     @relation(name: "receivedReviews", fields: [createdForId], references: [id])
+  createdForId Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Sold {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bought {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

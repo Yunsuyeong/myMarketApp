@@ -1,21 +1,33 @@
 import Product from "@/components/product";
 import PageTitle from "@/components/pageTitle";
 import { NextPage } from "next";
+import { ItemWithCount } from "../index";
+import useSWR from "swr";
+
+interface IBoughts {
+  id: number;
+  item: ItemWithCount;
+}
+
+interface IBoughtResponse {
+  [key: string]: IBoughts[];
+}
 
 const ProfileBought: NextPage = () => {
+  const { data } = useSWR<IBoughtResponse>("/api/users/profile/bought");
   return (
     <>
       <PageTitle title="Bought Item" />
       <div className="flex flex-col px-3 py-4 divide-y">
-        {[...Array(10)].map((_, i) => (
+        {data?.boughts?.map((bought) => (
           <Product
-            id={i}
-            key={i}
-            name="iPad Pro 10.1"
-            color="White"
-            price={99.9}
-            heartNumber={1}
+            id={bought.item.id}
+            key={bought.id}
+            name={bought.item.name}
+            color="white"
+            price={bought.item.price}
             commentNumber={1}
+            heartNumber={bought.item._count.favs}
           />
         ))}
       </div>

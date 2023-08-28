@@ -1,21 +1,33 @@
 import Product from "@/components/product";
 import PageTitle from "@/components/pageTitle";
 import { NextPage } from "next";
+import { ItemWithCount } from "../index";
+import useSWR from "swr";
+
+interface ILikes {
+  id: number;
+  item: ItemWithCount;
+}
+
+interface ILikedResponse {
+  [key: string]: ILikes[];
+}
 
 const ProfileLiked: NextPage = () => {
+  const { data } = useSWR<ILikedResponse>("/api/users/profile/liked");
   return (
     <>
       <PageTitle title="Liked Item" />
       <div className="flex flex-col px-3 py-4 divide-y">
-        {[...Array(10)].map((_, i) => (
+        {data?.likes?.map((liked) => (
           <Product
-            id={i}
-            key={i}
-            name="iPad Pro 10.1"
-            color="White"
-            price={99.9}
-            heartNumber={1}
+            id={liked.item.id}
+            key={liked.id}
+            name={liked.item.name}
+            color="white"
+            price={liked.item.price}
             commentNumber={1}
+            heartNumber={liked.item._count.favs}
           />
         ))}
       </div>

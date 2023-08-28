@@ -1,11 +1,27 @@
 import Layout from "@/components/layout";
 import PageTitle from "@/components/pageTitle";
+import useUser from "@/utils/client/useUser";
+import { cls } from "@/utils/client/utils";
+import { Review, User } from "@prisma/client";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import useSWR from "swr";
+import { formatDate } from "../community/[id]";
+
+interface ReviewWithUser extends Review {
+  createdBy: User;
+}
+
+interface IReviewResponse {
+  ok: boolean;
+  reviews: ReviewWithUser[];
+}
 
 const ProfileHome: NextPage = () => {
   const router = useRouter();
+  const { user } = useUser();
+  const { data } = useSWR<IReviewResponse>("/api/reviews");
   return (
     <Layout isSidebar title="My Profile">
       <PageTitle title="Profile" />
@@ -13,7 +29,7 @@ const ProfileHome: NextPage = () => {
         <div className="flex items-center space-x-2">
           <div className="h-16 w-16 rounded-full bg-white" />
           <div className="flex flex-col">
-            <span className="text-sm font-medium">Steve Jobs</span>
+            <span className="text-sm font-medium">{user?.name}</span>
             <Link href="/profile/edit" className="cursor-pointer">
               <span className="text-xs ">Edit Profile &rarr;</span>
             </Link>
@@ -88,62 +104,41 @@ const ProfileHome: NextPage = () => {
           </div>
         </div>
         <div className="mt-5">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-full bg-white" />
-            <div>
-              <h3 className="text-sm font-bold">Me</h3>
-              <div className="flex items-center">
-                <svg
-                  className="text-yellow-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg
-                  className="text-yellow-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg
-                  className="text-yellow-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg
-                  className="text-yellow-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg
-                  className="text-gray-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
+          {data?.reviews?.map((review) => (
+            <div key={review.id}>
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 rounded-full bg-white" />
+                <div>
+                  <h3 className="text-sm font-bold">{review.createdBy.name}</h3>
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, star) => (
+                      <svg
+                        key={star}
+                        className={cls(
+                          "h-5 w-5",
+                          review.score > star ? "text-yellow-500" : "text-white"
+                        )}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="text-sm">
+                    {formatDate(new Date(review.createdAt!))}{" "}
+                    {new Date(review.createdAt!).getHours()}:
+                    {new Date(review.createdAt!).getMinutes()}
+                  </span>
+                </div>
+              </div>
+              <div className="mt-2 text-sm">
+                <p>{review.review}</p>
               </div>
             </div>
-          </div>
-          <div className="mt-2 text-sm">
-            <p>abcdefghijklmnopqrstuvwxyz</p>
-          </div>
+          ))}
         </div>
       </div>
     </Layout>

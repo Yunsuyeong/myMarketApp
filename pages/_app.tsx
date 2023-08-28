@@ -1,7 +1,13 @@
 import "@/styles/globals.css";
+import useUser from "@/utils/client/useUser";
 import type { AppProps } from "next/app";
 import { HelmetProvider } from "react-helmet-async";
 import { SWRConfig } from "swr";
+
+const UserCheck = () => {
+  const { user } = useUser();
+  return null;
+};
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -12,6 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
         }}
       >
         <div className="w-full max-w-xl mx-auto border-l border-r border-white">
+          <UserCheck />
           <Component {...pageProps} />
         </div>
       </SWRConfig>
