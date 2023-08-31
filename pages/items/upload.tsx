@@ -32,7 +32,7 @@ const Upload: NextPage = () => {
     uploadItem(form);
   };
   useEffect(() => {
-    if (data?.ok) {
+    if (data && data?.ok) {
       router.replace(`/items/${data.item.id}`);
     }
   }, [data, router]);

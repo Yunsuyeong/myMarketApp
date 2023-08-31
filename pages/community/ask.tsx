@@ -31,7 +31,7 @@ const CommunityAsk: NextPage = () => {
     post({ ...form, latitude, longitude });
   };
   useEffect(() => {
-    if (data?.ok) {
+    if (data && data?.ok) {
       router.replace(`/community/${data.post.id}`);
     }
   }, [data, router]);

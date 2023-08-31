@@ -1,20 +1,55 @@
 import CircleBtn from "@/components/circleBtn";
 import Layout from "@/components/layout";
 import PageTitle from "@/components/pageTitle";
+import { Live, User } from "@prisma/client";
 import { NextPage } from "next";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+
+interface LiveWithUser extends Live {
+  user: User;
+}
+
+interface ILiveResponse {
+  ok: boolean;
+  lives: LiveWithUser[];
+}
 
 const LiveHome: NextPage = () => {
+  const [page, setPage] = useState(1);
+  const [result, setResult] = useState<LiveWithUser[]>([]);
+  const { data } = useSWR<ILiveResponse>(`/api/live?page=${page}`);
+  const onPageScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight > scrollHeight) {
+      setPage((prev) => prev + 1);
+    }
+  };
+  useEffect(() => {
+    if (data) {
+      setResult((prev) => prev?.concat(data?.lives));
+    }
+  }, [data]);
+  useEffect(() => {
+    window.addEventListener("scroll", onPageScroll);
+    return () => {
+      window.removeEventListener("scroll", onPageScroll);
+    };
+  }, [page, setPage]);
   return (
     <Layout isSidebar title="Live">
       <PageTitle title="Live" />
       <div className="pb-4 space-y-4 divide-y-2">
-        {[...Array(5)].map((_, i) => (
-          <div key={i}>
-            <Link href={`/live/${i}`}>
+        {result?.map((live) => (
+          <div key={live.id}>
+            <Link href={`/live/${live.id}`}>
               <div className="pt-2 px-3">
                 <div className="w-full aspect-video bg-white rounded-sm shadow-sm" />
-                <h1 className="text-2xl font-bold mt-2">iPad Pro 10.1</h1>
+                <h1 className="text-2xl font-bold mt-2">{live.name}</h1>
+                <p className="text-md">Created by {live.user.name}</p>
               </div>
             </Link>
           </div>

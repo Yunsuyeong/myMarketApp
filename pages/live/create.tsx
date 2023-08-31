@@ -4,6 +4,10 @@ import { NextPage } from "next";
 import Input from "@/components/input";
 import Textarea from "@/components/textarea";
 import { useForm } from "react-hook-form";
+import { Live } from "@prisma/client";
+import useMutation from "@/utils/client/useMutation";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 interface ICreateForm {
   name?: string;
@@ -11,17 +15,32 @@ interface ICreateForm {
   description?: string;
 }
 
+interface IMutationResult {
+  ok: boolean;
+  live: Live;
+}
+
 const LiveCreate: NextPage = () => {
+  const router = useRouter();
+  const [create, { data, loading }] = useMutation<IMutationResult>("/api/live");
   const { register, handleSubmit } = useForm<ICreateForm>();
+  const onValid = (form: ICreateForm) => {
+    create(form);
+  };
+  useEffect(() => {
+    if (data && data.ok) {
+      router.replace(`/live/${data.live.id}`);
+    }
+  }, [data, router]);
   return (
     <>
       <PageTitle title="Live Create" />
-      <div className="px-3 py-4 space-y-4">
+      <form onSubmit={handleSubmit(onValid)} className="px-3 py-4 space-y-4">
         <Input
           name="name"
           label="Name"
           required
-          type="email"
+          type="text"
           placeholder="Write a Name"
           register={register("name", { required: true })}
         />
@@ -40,8 +59,8 @@ const LiveCreate: NextPage = () => {
           name="description"
           label="Description"
         />
-        <Button text="Go to Live" />
-      </div>
+        <Button text={loading ? "Loading..." : "Go to Live"} />
+      </form>
     </>
   );
 };

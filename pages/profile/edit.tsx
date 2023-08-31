@@ -60,7 +60,7 @@ const ProfileEdit: NextPage = () => {
       setError("formErrors", { message: data.error });
     }
     if (data && data.ok) {
-      router.push("/profile");
+      router.replace("/profile");
     }
   }, [data, router]);
   return (
